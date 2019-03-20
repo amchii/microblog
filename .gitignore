@@ -110,7 +110,6 @@ ig_*
 _*/
 *.db
 logs/
-config*
 test*
 temp*
 .vscode
