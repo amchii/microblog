@@ -111,6 +111,6 @@ _*/
 *.db
 logs/
 test*
-temp*
+tempCode*
 .vscode
 .idea
