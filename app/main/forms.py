@@ -1,6 +1,3 @@
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-# DateTime: 2019/3/16 10:22
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
@@ -12,7 +9,7 @@ from app.models import User
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'),
-                             validators=[Length(min=0, max=140, message='需要在0-140字之内')])
+                             validators=[Length(min=0, max=140)])
     submit = SubmitField(_l('Submit'))
 
     def __init__(self, original_username, *args, **kwargs):
@@ -39,9 +36,10 @@ class SearchForm(FlaskForm):
             kwargs['formdata'] = request.args
         if 'csrf_enabled' not in kwargs:
             kwargs['csrf_enabled'] = False
-        super().__init__(*args, **kwargs)
+        super(SearchForm, self).__init__(*args, **kwargs)
 
 
 class MessageForm(FlaskForm):
-    message = TextAreaField(_l('Message'), validators=[DataRequired(), Length(min=0, max=140)])
+    message = TextAreaField(_l('Message'), validators=[
+        DataRequired(), Length(min=1, max=140)])
     submit = SubmitField(_l('Submit'))

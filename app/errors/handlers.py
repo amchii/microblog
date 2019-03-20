@@ -1,6 +1,3 @@
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-# DateTime: 2019/3/16 9:23
 from flask import render_template
 from app import db
 from app.errors import bp
