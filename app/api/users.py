@@ -1,5 +1,5 @@
 from app.api import bp
-from flask import jsonify, request, url_for
+from flask import jsonify, request, url_for, g, abort
 from app import db
 from app.api.errors import bad_request
 
@@ -28,7 +28,8 @@ def get_followers(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = User.to_collection_dict(user.followers, page, per_page, 'api.get_followers', id=id)
+    data = User.to_collection_dict(
+        user.followers, page, per_page, 'api.get_followers', id=id)
     return jsonify(data)
 
 
@@ -38,7 +39,8 @@ def get_followed(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = User.to_collection_dict(user.followed, page, per_page, 'api.get_followers', id=id)
+    data = User.to_collection_dict(
+        user.followed, page, per_page, 'api.get_followers', id=id)
     return jsonify(data)
 
 
@@ -64,6 +66,8 @@ def create_user():
 @bp.route('/users/<int:id>', methods=['PUT'])
 @token_auth.login_required
 def update_user(id):
+    if g.current_user.id != id:
+        abort(403)
     user = User.query.get_or_404(id)
     data = request.get_json() or {}
     if 'username' in data and data['username'] != user.username and \
