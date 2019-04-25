@@ -18,7 +18,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(),
-                                           EqualTo('password')])
+                                           EqualTo('password', message='两次密码必须相等')])
     submit = SubmitField(_l('Register'))
 
     def validate_username(self, username):
